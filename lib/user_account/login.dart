@@ -1,9 +1,16 @@
 import 'package:ecom/utils/constants.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  bool isObscure = true;
+  int passVal = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,13 +104,33 @@ class LoginPage extends StatelessWidget {
             children: [
               TextFormField(
                 decoration: getDecoation("at least 8 characters"),
+                obscureText: isObscure,
+                onChanged: (val) {
+                  setState(() {
+                    if (val.length == 3) {
+                      passVal = 1;
+                    } else if (val.length == 5) {
+                      passVal = 11;
+                    } else if (val.length == 6) {
+                      passVal = 111;
+                    } else if (val.length > 8) {
+                      passVal = 1111;
+                    } else if (val.length < 2) {
+                      passVal = 0;
+                    }
+                  });
+                },
               ),
               Align(
                 alignment: Alignment.topRight,
                 child: IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    setState(() {
+                      isObscure = !isObscure;
+                    });
+                  },
                   icon: Icon(
-                    Icons.remove_red_eye,
+                    isObscure ? Icons.visibility : Icons.visibility_off,
                     color: ColorConstants.kGreyColor,
                   ),
                 ),
@@ -113,13 +140,13 @@ class LoginPage extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              getPassowrdContainer(color: ColorConstants.kGreyColor),
+              getPassowrdContainer(color: (passVal / 1) >= 1),
               const SizedBox(width: 4),
-              getPassowrdContainer(color: ColorConstants.kGreyColor),
+              getPassowrdContainer(color: (passVal / 10) >= 1),
               const SizedBox(width: 4),
-              getPassowrdContainer(color: ColorConstants.kGreyColor),
+              getPassowrdContainer(color: (passVal / 100) >= 1),
               const SizedBox(width: 4),
-              getPassowrdContainer(color: ColorConstants.kGreyColor),
+              getPassowrdContainer(color: (passVal / 1000) >= 1),
             ],
           ),
           const SizedBox(
@@ -205,12 +232,13 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  getPassowrdContainer({color}) {
+  getPassowrdContainer({color = false}) {
     return Expanded(
       child: Container(
         height: 5,
         decoration: BoxDecoration(
-            color: color, borderRadius: BorderRadius.circular(10)),
+            color: color ? Colors.green : ColorConstants.kGreyColor,
+            borderRadius: BorderRadius.circular(10)),
       ),
     );
   }
