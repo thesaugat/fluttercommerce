@@ -1,4 +1,6 @@
+import 'package:ecom/splash/splash_screen.dart';
 import 'package:ecom/user_account/login.dart';
+import 'package:ecom/user_account/sign_up.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -15,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.brown,
       ),
-      home: const LoginPage(),
+      home: const SplashScreen(),
     );
   }
 }

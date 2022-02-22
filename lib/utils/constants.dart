@@ -9,8 +9,14 @@ class ColorConstants {
   static final kSecondayTextColor = Colors.grey.shade800;
 }
 
-final kDividerColor = Colors.grey.shade500;
-final kPrimaryColor = Colors.blue;
+// Form Error
+final RegExp emailValidatorRegExp = RegExp(
+    r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$");
+
+const kDividerColor = Color(0xFFF9F9F9);
+const kInputColor = Color.fromARGB(255, 231, 231, 231);
+const kPrimaryColor = Color(0xFF0084FF);
+const kGreyColor = Color(0xFF969696);
 
 class SizeConstants {
   static const normalSpacing = 12.0;

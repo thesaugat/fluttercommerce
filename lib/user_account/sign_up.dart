@@ -1,25 +1,17 @@
-import 'package:ecom/home/home_page.dart';
-import 'package:ecom/user_account/sign_up.dart';
+import 'package:ecom/user_account/login.dart';
 import 'package:ecom/utils/constants.dart';
-import 'package:ecom/utils/user_interface_utils.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({Key? key}) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignUpPageState extends State<SignUpPage> {
   bool isObscure = true;
-  bool remember = false;
   int passVal = 0;
-  String email = "";
-  String pass = "";
-  String truePass = "Test123";
-  String trueEmail = "test@test.com";
-  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +20,7 @@ class _LoginPageState extends State<LoginPage> {
         centerTitle: false,
         backgroundColor: Colors.white,
         title: const Text(
-          "Log In",
+          "Sign Up",
           style: TextStyle(
               color: Colors.black, fontWeight: FontWeight.w600, fontSize: 22),
         ),
@@ -54,46 +46,43 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ],
       ),
-      body: Form(
-        key: _formKey,
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-          color: Colors.white,
+      body: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        color: Colors.white,
+        child: SingleChildScrollView(
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            SingleChildScrollView(
-              child: Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(.2),
-                        spreadRadius: 1,
-                        blurRadius: 1,
-                      ),
-                    ],
-                    border: Border.all(color: Colors.grey.shade300),
-                    borderRadius: BorderRadius.circular(10)),
-                child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        "assets/icons/google.png",
-                        height: 20,
-                        width: 20,
-                        color: Colors.grey.shade600,
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      const Text(
-                        "Log In With Google",
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ]),
-              ),
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(.2),
+                      spreadRadius: 1,
+                      blurRadius: 1,
+                    ),
+                  ],
+                  border: Border.all(color: Colors.grey.shade300),
+                  borderRadius: BorderRadius.circular(10)),
+              child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      "assets/icons/google.png",
+                      height: 20,
+                      width: 20,
+                      color: Colors.grey.shade600,
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    const Text(
+                      "Sign Up With Google",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ]),
             ),
             const SizedBox(
               height: 24,
@@ -105,21 +94,13 @@ class _LoginPageState extends State<LoginPage> {
             const SizedBox(
               height: 24,
             ),
+            getTitle("Name"),
+            getDecoratedContainer(TextFormField(
+              decoration: getDecoation("Lexis Alexandar"),
+            )),
             getTitle("Email"),
             getDecoratedContainer(TextFormField(
               decoration: getDecoation("example@mail.com"),
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return "Email Cannot be Epty";
-                } else if (!emailValidatorRegExp.hasMatch(value)) {
-                  return "Please Enter a Valid Email Address";
-                }
-                return null;
-              },
-              onChanged: (val) {},
-              onSaved: (val) {
-                email = val!;
-              },
             )),
             getTitle("Password"),
             getDecoratedContainer(Stack(
@@ -127,17 +108,20 @@ class _LoginPageState extends State<LoginPage> {
                 TextFormField(
                   decoration: getDecoation("at least 8 characters"),
                   obscureText: isObscure,
-                  onChanged: (val) {},
-                  onSaved: (val) {
-                    pass = val!;
-                  },
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "Password Cannot be Epty";
-                    } else if (value.length <= 6) {
-                      return "Password should be of atleast 6 characters";
-                    }
-                    return null;
+                  onChanged: (val) {
+                    setState(() {
+                      if (val.length == 2) {
+                        passVal = 1;
+                      } else if (val.length == 4) {
+                        passVal = 11;
+                      } else if (val.length == 6) {
+                        passVal = 111;
+                      } else if (val.length > 8) {
+                        passVal = 1111;
+                      } else if (val.length < 2) {
+                        passVal = 0;
+                      }
+                    });
                   },
                 ),
                 Align(
@@ -150,37 +134,59 @@ class _LoginPageState extends State<LoginPage> {
                     },
                     icon: Icon(
                       isObscure ? Icons.visibility : Icons.visibility_off,
-                      color: kGreyColor,
+                      color: ColorConstants.kGreyColor,
                     ),
                   ),
                 ),
               ],
             )),
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Checkbox(
-                  value: remember,
-                  onChanged: (val) {
-                    setState(() {
-                      remember = val!;
-                    });
-                  },
-                  side: const BorderSide(
-                    color: kGreyColor,
-                    width: 2,
-                  ),
-                ),
-                Text(
-                  "Remember Me",
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                      color: ColorConstants.kSecondayTextColor),
-                )
+                getPassowrdContainer(color: (passVal / 1) >= 1),
+                const SizedBox(width: 4),
+                getPassowrdContainer(color: (passVal / 10) >= 1),
+                const SizedBox(width: 4),
+                getPassowrdContainer(color: (passVal / 100) >= 1),
+                const SizedBox(width: 4),
+                getPassowrdContainer(color: (passVal / 1000) >= 1),
               ],
             ),
             const SizedBox(
               height: SizeConstants.smallSpacing,
+            ),
+            Row(
+              children: [
+                Checkbox(
+                  value: false,
+                  onChanged: (val) {},
+                  side: BorderSide(
+                    color: kDividerColor,
+                    width: 2,
+                  ),
+                ),
+                RichText(
+                  text: TextSpan(
+                    style: TextStyle(
+                        color: ColorConstants.kSecondayTextColor, fontSize: 15),
+                    text: 'I agree with',
+                    children: const <TextSpan>[
+                      TextSpan(
+                          text: ' Terms',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.blue)),
+                      TextSpan(text: ' and'),
+                      TextSpan(
+                          text: ' Privacy ',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.blue)),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: SizeConstants.normalSpacing,
             ),
             SizedBox(
               width: double.infinity,
@@ -188,35 +194,8 @@ class _LoginPageState extends State<LoginPage> {
               child: TextButton(
                 style: TextButton.styleFrom(
                     primary: Colors.white, backgroundColor: Colors.blue),
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    _formKey.currentState!.save();
-                    if (pass == truePass && email == trueEmail) {
-                      Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (__) {
-                        return const HomePage();
-                      }));
-                    } else {
-                      UserInterfaceUtils.showSnackBar(
-                          "UserName and Passowrd Doesnot match", context);
-                    }
-                  }
-                },
-                child: const Text('Log In'),
-              ),
-            ),
-            const SizedBox(
-              height: SizeConstants.largeSpacing,
-            ),
-            const Align(
-              alignment: Alignment.center,
-              child: Text(
-                "Forget Password?",
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: kPrimaryColor,
-                ),
+                onPressed: () {},
+                child: const Text('Sign Up'),
               ),
             ),
             const SizedBox(
@@ -246,11 +225,11 @@ class _LoginPageState extends State<LoginPage> {
                 onTap: () {
                   Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (__) {
-                    return const SignUpPage();
+                    return const LoginPage();
                   }));
                 },
                 child: const Text(
-                  "Sign Up",
+                  "Log In",
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
