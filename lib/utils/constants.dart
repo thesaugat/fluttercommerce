@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+const baseUrl = "https://ecommerce.saugatimilsina.com.np/api/v1";
+
 class ColorConstants {
   static final kGreyColor = Colors.grey.shade300;
   static final kWarningColor = Colors.red;
