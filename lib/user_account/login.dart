@@ -1,4 +1,5 @@
 import 'package:ecom/home/home_page.dart';
+import 'package:ecom/models/api_models.dart';
 import 'package:ecom/user_account/sign_up.dart';
 import 'package:ecom/utils/constants.dart';
 import 'package:ecom/utils/user_interface_utils.dart';
@@ -134,8 +135,8 @@ class _LoginPageState extends State<LoginPage> {
                   validator: (value) {
                     if (value!.isEmpty) {
                       return "Password Cannot be Epty";
-                    } else if (value.length <= 6) {
-                      return "Password should be of atleast 6 characters";
+                    } else if (value.length < 5) {
+                      return "Password should be of atleast 5 characters";
                     }
                     return null;
                   },
@@ -191,15 +192,20 @@ class _LoginPageState extends State<LoginPage> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    if (pass == truePass && email == trueEmail) {
-                      Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (__) {
-                        return const HomePage();
-                      }));
-                    } else {
-                      UserInterfaceUtils.showSnackBar(
-                          "UserName and Passowrd Doesnot match", context);
-                    }
+                    OnlineModel.login(
+                        email: email,
+                        password: pass,
+                        success: (resp) {
+                          UserInterfaceUtils.showSnackBar(
+                              "Login Succed", context);
+                          Navigator.pushReplacement(context,
+                              MaterialPageRoute(builder: (__) {
+                            return const HomePage();
+                          }));
+                        },
+                        fail: (msg) {
+                          UserInterfaceUtils.showSnackBar(msg, context);
+                        });
                   }
                 },
                 child: const Text('Log In'),

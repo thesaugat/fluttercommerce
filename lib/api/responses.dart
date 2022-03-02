@@ -105,3 +105,44 @@ class Categories {
     return data;
   }
 }
+
+class LoginResponse {
+  bool? error;
+  String? name;
+  String? email;
+  String? apiKey;
+  String? createdAt;
+  String? message;
+  bool? isStaff;
+
+  LoginResponse(
+      {this.error,
+      this.name,
+      this.email,
+      this.apiKey,
+      this.createdAt,
+      this.message,
+      this.isStaff});
+
+  LoginResponse.fromJson(Map<String, dynamic> json) {
+    error = json['error'];
+    name = json['name'];
+    email = json['email'];
+    apiKey = json['apiKey'];
+    createdAt = json['createdAt'];
+    message = json['message'];
+    isStaff = json['is_staff'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['error'] = error;
+    data['name'] = name;
+    data['email'] = email;
+    data['apiKey'] = apiKey;
+    data['createdAt'] = createdAt;
+    data['message'] = message;
+    data['is_staff'] = isStaff;
+    return data;
+  }
+}

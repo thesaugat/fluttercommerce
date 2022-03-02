@@ -26,3 +26,9 @@ class SizeConstants {
   static const smallSpacing = 6.0;
   static const largeSpacing = 16.0;
 }
+
+class Keys {
+  static const IS_LOGGED_KEY = "iilk";
+  static const API_KEY = "ak";
+  static const LOGIN_RESPONSE_KEY = "lrk";
+}

@@ -1,6 +1,8 @@
 import 'package:ecom/home/home_page.dart';
+import 'package:ecom/user_account/login.dart';
 import 'package:ecom/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -13,11 +15,14 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(milliseconds: 500), () {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (__) {
-        return const HomePage();
-      }));
-    });
+    Future.delayed(const Duration(milliseconds: 500), () {});
+    getPrfefs();
+  }
+
+  goHome() {
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (__) {
+      return const HomePage();
+    }));
   }
 
   @override
@@ -39,5 +44,21 @@ class _SplashScreenState extends State<SplashScreen> {
         )),
       ),
     );
+  }
+
+  void getPrfefs() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    bool? isLogged = sharedPreferences.getBool(Keys.IS_LOGGED_KEY);
+    if (isLogged == null || !isLogged) {
+      goTOUserAccountPage();
+    } else {
+      goHome();
+    }
+  }
+
+  void goTOUserAccountPage() {
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (__) {
+      return const LoginPage();
+    }));
   }
 }
