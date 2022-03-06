@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:ecom/api/responses.dart';
 import 'package:ecom/utils/constants.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,6 +24,20 @@ class OnlineModel {
       if (response.statusCode == 200) {
         var json = jsonDecode(response.body);
         success(CategoryResponse.fromJson(json).categories);
+      } else {
+        fail(response.reasonPhrase);
+      }
+    });
+  }
+
+  static getAllProducts({success, fail}) {
+    http
+        .get(Uri.parse("$baseUrl/get-all-products"))
+        .then((http.Response response) {
+      debugPrint(response.toString());
+      if (response.statusCode == 200) {
+        var json = jsonDecode(response.body);
+        success(ProductListResponse.fromJson(json).products);
       } else {
         fail(response.reasonPhrase);
       }

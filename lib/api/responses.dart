@@ -146,3 +146,85 @@ class LoginResponse {
     return data;
   }
 }
+
+class ProductListResponse {
+  List<Products>? products;
+  bool? error;
+  String? message;
+
+  ProductListResponse({this.products, this.error, this.message});
+
+  ProductListResponse.fromJson(Map<String, dynamic> json) {
+    if (json['products'] != null) {
+      products = <Products>[];
+      json['products'].forEach((v) {
+        products!.add(Products.fromJson(v));
+      });
+    }
+    error = json['error'];
+    message = json['message'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    if (products != null) {
+      data['products'] = products!.map((v) => v.toJson()).toList();
+    }
+    data['error'] = error;
+    data['message'] = message;
+    return data;
+  }
+}
+
+class Products {
+  int? id;
+  String? name;
+  int? price;
+  int? discountPrice;
+  String? description;
+  int? quantity;
+  String? productionDate;
+  String? expireDate;
+  List<String>? images;
+  List<int>? categories;
+
+  Products(
+      {this.id,
+      this.name,
+      this.price,
+      this.discountPrice,
+      this.description,
+      this.quantity,
+      this.productionDate,
+      this.expireDate,
+      this.images,
+      this.categories});
+
+  Products.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    price = json['price'];
+    discountPrice = json['discount_price'];
+    description = json['description'];
+    quantity = json['quantity'];
+    productionDate = json['production_date'];
+    expireDate = json['expire_date'];
+    images = json['images'].cast<String>();
+    categories = json['categories'].cast<int>();
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['price'] = price;
+    data['discount_price'] = discountPrice;
+    data['description'] = description;
+    data['quantity'] = quantity;
+    data['production_date'] = productionDate;
+    data['expire_date'] = expireDate;
+    data['images'] = images;
+    data['categories'] = categories;
+    return data;
+  }
+}
