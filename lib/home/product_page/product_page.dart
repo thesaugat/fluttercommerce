@@ -20,9 +20,26 @@ class _SingleProductPageState extends State<SingleProductPage> {
         top: true,
         bottom: false,
         child: Column(children: [
-          buildSlider(widget.products!.images!),
-          getProductDetails(),
-          getButtons(),
+          Stack(
+            children: [
+              buildSlider(widget.products!.images!),
+              IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: const Icon(Icons.arrow_back_ios_new)),
+            ],
+          ),
+          Expanded(
+              child: Stack(
+            children: [
+              getProductDetails(),
+              Positioned(
+                bottom: 0,
+                child: getButtons(),
+              )
+            ],
+          )),
         ]),
       ),
     );
@@ -58,75 +75,73 @@ class _SingleProductPageState extends State<SingleProductPage> {
   }
 
   getProductDetails() {
-    return Expanded(
-      child: Container(
-        padding: const EdgeInsets.all(20),
-        width: double.infinity,
-        decoration: BoxDecoration(
-            color: Colors.grey.withOpacity(.15),
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(40),
-              topRight: Radius.circular(40),
-            )),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                widget.products!.name!,
-                style:
-                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              Padding(
-                  padding: const EdgeInsets.only(top: 5, bottom: 0),
-                  child: Row(
-                    children: [
-                      Text(
-                        "Rs. ${widget.products!.discountPrice}",
-                        style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: kPrimaryColor),
-                      ),
-                      Text(
-                        "  Rs. ${widget.products!.price}",
-                        style: const TextStyle(
-                            decoration: TextDecoration.lineThrough,
-                            fontSize: 14,
-                            fontWeight: FontWeight.normal,
-                            color: Colors.grey),
-                      ),
-                    ],
-                  )),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 5),
+    return Container(
+      padding: const EdgeInsets.only(top: 20, right: 14, left: 14, bottom: 90),
+      width: double.infinity,
+      height: double.infinity,
+      decoration: BoxDecoration(
+          color: Colors.grey.withOpacity(.15),
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(40),
+            topRight: Radius.circular(40),
+          )),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              widget.products!.name!,
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            Padding(
+                padding: const EdgeInsets.only(top: 5, bottom: 0),
                 child: Row(
                   children: [
-                    Icon(Icons.star_rate_rounded, color: Colors.yellow[800]),
-                    const Text(
-                      "5.0",
-                      style: TextStyle(
-                          fontSize: 14, fontWeight: FontWeight.normal),
-                    ),
-                    const Text(
-                      "  (1120) Reviews",
-                      style: TextStyle(
+                    Text(
+                      "Rs. ${widget.products!.discountPrice}",
+                      style: const TextStyle(
                           fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: kPrimaryColor),
+                    ),
+                    Text(
+                      "  Rs. ${widget.products!.price}",
+                      style: const TextStyle(
+                          decoration: TextDecoration.lineThrough,
+                          fontSize: 14,
                           fontWeight: FontWeight.normal,
                           color: Colors.grey),
                     ),
                   ],
-                ),
+                )),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5),
+              child: Row(
+                children: [
+                  Icon(Icons.star_rate_rounded, color: Colors.yellow[800]),
+                  const Text(
+                    "5.0",
+                    style:
+                        TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
+                  ),
+                  const Text(
+                    "  (1120) Reviews",
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.normal,
+                        color: Colors.grey),
+                  ),
+                ],
               ),
-              Text(
-                widget.products!.description!,
-                style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.normal,
-                    color: Colors.grey[800]),
-              ),
-            ],
-          ),
+            ),
+            Text(
+              widget.products!.description!,
+              style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.normal,
+                  color: Colors.grey[800]),
+            ),
+          ],
         ),
       ),
     );
@@ -134,7 +149,8 @@ class _SingleProductPageState extends State<SingleProductPage> {
 
   getButtons() {
     return Container(
-      height: 100,
+      height: 90,
+      width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: const BoxDecoration(
         color: kPrimaryColor,
@@ -143,22 +159,28 @@ class _SingleProductPageState extends State<SingleProductPage> {
           topRight: Radius.circular(30),
         ),
       ),
-      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-        Text(
-          "Price\nRs. ${widget.products!.discountPrice}",
-          style: const TextStyle(
-              fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
-        ),
-        ElevatedButton(
-          onPressed: () {},
-          child: Text("Add To Bag"),
-          style: ElevatedButton.styleFrom(
-              primary: Colors.orange,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              textStyle:
-                  const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-        ),
-      ]),
+      child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "Price\nRs. ${widget.products!.discountPrice}",
+              style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
+            ),
+            ElevatedButton(
+              onPressed: () {},
+              child: Text("Add To Bag"),
+              style: ElevatedButton.styleFrom(
+                  primary: Colors.orange,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  textStyle: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.bold)),
+            ),
+          ]),
     );
   }
 }
