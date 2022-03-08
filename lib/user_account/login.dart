@@ -1,4 +1,4 @@
-import 'package:ecom/home/home_page.dart';
+import 'package:ecom/home/home_page/home_page.dart';
 import 'package:ecom/models/api_models.dart';
 import 'package:ecom/user_account/sign_up.dart';
 import 'package:ecom/utils/constants.dart';

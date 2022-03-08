@@ -6,7 +6,7 @@ import 'package:ecom/utils/user_interface_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
-import '../api/responses.dart';
+import '../../api/responses.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);

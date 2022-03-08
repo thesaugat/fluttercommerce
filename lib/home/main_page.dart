@@ -1,0 +1,64 @@
+import 'package:ecom/home/cart_page/cart_page.dart';
+import 'package:ecom/home/category_page/category_page.dart';
+import 'package:ecom/home/home_page/home_page.dart';
+import 'package:ecom/home/profile_page/profile_page.dart';
+import 'package:ecom/utils/constants.dart';
+import 'package:flutter/material.dart';
+
+class MainPage extends StatefulWidget {
+  const MainPage({Key? key}) : super(key: key);
+
+  @override
+  State<MainPage> createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+  int _selectedPage = 0;
+  List<Widget> pages = [];
+  final home = HomePage();
+  final cat = CategoryPage();
+  final cart = CartPage();
+  final profile = ProfilePage();
+
+  @override
+  void initState() {
+    super.initState();
+    pages.addAll([home, cat, cart, profile]);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: pages[_selectedPage],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedPage,
+        fixedColor: kPrimaryColor,
+        showUnselectedLabels: true,
+        unselectedItemColor: Colors.grey,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.business),
+            label: 'Category',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.school),
+            label: 'Cart',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.school),
+            label: 'Profile',
+          ),
+        ],
+        onTap: (index) {
+          setState(() {
+            _selectedPage = index;
+          });
+        },
+      ),
+    );
+  }
+}

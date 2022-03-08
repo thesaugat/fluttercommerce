@@ -97,4 +97,45 @@ class OnlineModel {
       }
     });
   }
+
+  static addToCart(
+      {required apiKey,
+      required pid,
+      required quanity,
+      required success,
+      required fail}) {
+    http.post(Uri.parse("$baseUrl/cart"), headers: {
+      'Apikey': apiKey
+    }, body: {
+      "p_id": pid,
+      "quantity": quanity
+    }).then((http.Response response) {
+      if (response.statusCode == 200) {
+        var json = jsonDecode(response.body);
+        LoginResponse loginResponse = LoginResponse.fromJson(json);
+        if (!loginResponse.error!) {
+          success(loginResponse);
+        } else {
+          fail(loginResponse.message);
+        }
+      } else {
+        fail(response.reasonPhrase);
+      }
+    });
+  }
+
+  static getCart({required apiKey, required success, required fail}) {
+    http.get(
+      Uri.parse("$baseUrl/cart"),
+      headers: {'Apikey': apiKey},
+    ).then((http.Response response) {
+      if (response.statusCode == 200) {
+        debugPrint(response.body.toString());
+        var json = jsonDecode(response.body);
+        success(ProductListResponse.fromJson(json).products);
+      } else {
+        fail(response.reasonPhrase);
+      }
+    });
+  }
 }

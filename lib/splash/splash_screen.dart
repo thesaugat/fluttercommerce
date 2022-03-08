@@ -1,8 +1,13 @@
-import 'package:ecom/home/home_page.dart';
+import 'dart:convert';
+
+import 'package:ecom/api/responses.dart';
 import 'package:ecom/user_account/login.dart';
+import 'package:ecom/utils/DataHolder.dart';
 import 'package:ecom/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../home/main_page.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -21,7 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   goHome() {
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (__) {
-      return const HomePage();
+      return const MainPage();
     }));
   }
 
@@ -52,6 +57,9 @@ class _SplashScreenState extends State<SplashScreen> {
     if (isLogged == null || !isLogged) {
       goTOUserAccountPage();
     } else {
+      var lr = sharedPreferences.getString(Keys.LOGIN_RESPONSE_KEY);
+      // DataHolder.loginResponse = LoginResponse.fromJson(jsonDecode(lr!));
+      // LoginResponse.fromJson(Data).apiKey
       goHome();
     }
   }
