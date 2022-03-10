@@ -14,22 +14,25 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int _selectedPage = 0;
-  List<Widget> pages = [];
-  final home = HomePage();
-  final cat = CategoryPage();
-  final cart = CartPage();
-  final profile = ProfilePage();
+  List<Widget> pages = [
+    const HomePage(),
+    const CategoryPage(),
+    const CartPage(),
+    const ProfilePage()
+  ];
 
   @override
   void initState() {
     super.initState();
-    pages.addAll([home, cat, cart, profile]);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: pages[_selectedPage],
+      body: IndexedStack(
+        children: pages,
+        index: _selectedPage,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedPage,
         fixedColor: kPrimaryColor,
