@@ -6,6 +6,7 @@ import 'package:ecom/utils/user_interface_utils.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
+  static const route = 'lp';
   const LoginPage({Key? key}) : super(key: key);
 
   @override

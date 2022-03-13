@@ -55,11 +55,11 @@ class OnlineModel {
       "password": password
     }).then((http.Response response) {
       if (response.statusCode == 200) {
-        var json = jsonDecode(response.body);
-        LoginResponse loginResponse = LoginResponse.fromJson(json);
+        var j = jsonDecode(response.body);
+        LoginResponse loginResponse = LoginResponse.fromJson(j);
         if (!loginResponse.error!) {
           SharedPreferences.getInstance().then((value) {
-            value.setString(Keys.LOGIN_RESPONSE_KEY, json.toString());
+            value.setString(Keys.LOGIN_RESPONSE_KEY, json.encode(j));
             value.setBool(Keys.IS_LOGGED_KEY, true);
           });
           success(loginResponse);
@@ -100,8 +100,8 @@ class OnlineModel {
 
   static addToCart(
       {required apiKey,
-      required pid,
-      required quanity,
+      required int pid,
+      required int quanity,
       required success,
       required fail}) {
     http.post(Uri.parse("$baseUrl/cart"), headers: {
@@ -110,6 +110,7 @@ class OnlineModel {
       "p_id": pid,
       "quantity": quanity
     }).then((http.Response response) {
+      print(response.body);
       if (response.statusCode == 200) {
         var json = jsonDecode(response.body);
         LoginResponse loginResponse = LoginResponse.fromJson(json);

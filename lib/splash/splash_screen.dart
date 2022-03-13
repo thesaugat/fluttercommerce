@@ -58,8 +58,7 @@ class _SplashScreenState extends State<SplashScreen> {
       goTOUserAccountPage();
     } else {
       var lr = sharedPreferences.getString(Keys.LOGIN_RESPONSE_KEY);
-      // DataHolder.loginResponse = LoginResponse.fromJson(jsonDecode(lr!));
-      // LoginResponse.fromJson(Data).apiKey
+      DataHolder.loginResponse = LoginResponse.fromJson(json.decode(lr!));
       goHome();
     }
   }

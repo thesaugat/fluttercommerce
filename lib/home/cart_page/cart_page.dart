@@ -1,3 +1,4 @@
+import 'package:ecom/home/cart_page/components/cart_item.dart';
 import 'package:ecom/utils/DataHolder.dart';
 import 'package:flutter/material.dart';
 
@@ -22,19 +23,30 @@ class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Cart")),
-    );
+        appBar: AppBar(title: const Text("Cart")),
+        body: productList != null
+            ? ListView.builder(
+                itemCount: productList!.length,
+                itemBuilder: (context, index) {
+                  return CartItem(product: productList![index], onClick: () {});
+                })
+            : const Center(
+                child: CircularProgressIndicator(),
+              ));
   }
 
   void getCartItems() {
+    String apiKey = DataHolder.loginResponse!.apiKey!;
     OnlineModel.getCart(
-      apiKey: "4bc5704de117415c9bd64e36ab2a4792",
+      apiKey: apiKey,
       success: (List<Products> data) {
         setState(() {
           productList = data.reversed.toList();
         });
       },
-      fail: (msg) {},
+      fail: (msg) {
+        print("failed cart $msg");
+      },
     );
   }
 }

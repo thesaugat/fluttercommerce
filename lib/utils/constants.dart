@@ -4,10 +4,9 @@ const baseUrl = "https://ecommerce.saugatimilsina.com.np/api/v1";
 
 class ColorConstants {
   static final kGreyColor = Colors.grey.shade300;
-  static final kWarningColor = Colors.red;
+  static const kWarningColor = Colors.red;
   static final kInfoColor = Colors.yellow.shade300;
   static final kSuccessColor = Colors.green[700];
-  static final kPrimaryTextColor = Colors.black;
   static final kSecondayTextColor = Colors.grey.shade800;
 }
 
@@ -19,6 +18,7 @@ const kDividerColor = Color(0xFFF9F9F9);
 const kInputColor = Color.fromARGB(255, 231, 231, 231);
 const kPrimaryColor = Color(0xFF0084FF);
 const kGreyColor = Color(0xFF969696);
+const kPrimaryTextColor = Colors.black;
 
 class SizeConstants {
   static const normalSpacing = 12.0;

@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecom/home/product_page/product_page.dart';
 import 'package:ecom/models/api_models.dart';
+import 'package:ecom/utils/DataHolder.dart';
 import 'package:ecom/utils/constants.dart';
 import 'package:ecom/utils/user_interface_utils.dart';
 import 'package:flutter/material.dart';
@@ -318,7 +319,22 @@ class _HomeBodyState extends State<HomeBody> {
                                     Icons.add,
                                     color: Colors.white,
                                   ),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    OnlineModel.addToCart(
+                                      apiKey: DataHolder.loginResponse!.apiKey!,
+                                      pid: productList![i].id!,
+                                      quanity: 1,
+                                      success: (resp) {
+                                        UserInterfaceUtils.showSnackBar(
+                                            "Added to Cart", context);
+                                      },
+                                      fail: (msg) {
+                                        UserInterfaceUtils.showSnackBar(
+                                            "Sorry cannot add to Cart",
+                                            context);
+                                      },
+                                    );
+                                  },
                                 ),
                               ))
                         ],
@@ -330,40 +346,5 @@ class _HomeBodyState extends State<HomeBody> {
             );
           });
     }
-  }
-}
-
-class FruitList extends StatelessWidget {
-  const FruitList({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final data = ["Mango", "Banana", "Apple", "Cucumber", "Grapes"];
-    final url = [
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Carabao_mangoes_%28Philippines%29.jpg/440px-Carabao_mangoes_%28Philippines%29.jpg",
-      "https://cdn1.sph.harvard.edu/wp-content/uploads/sites/30/2018/08/bananas-1354785_1920.jpg",
-      "https://usapple.org/wp-content/uploads/2019/10/apple-pink-lady.png",
-      "https://static.libertyprim.com/files/familles/concombre-large.jpg",
-      "https://monsabsmarketplace.com/wp-content/uploads/2020/12/Grapes.jpg"
-    ];
-    return ListView.separated(
-        separatorBuilder: (context, index) => const SizedBox(height: 10),
-        itemCount: data.length,
-        itemBuilder: (_, i) {
-          return ListTile(
-            onTap: () {
-              UserInterfaceUtils.showSnackBar("${data[i]} Clicked", context);
-            },
-            title: Text(data[i]),
-            trailing: SizedBox(
-              height: 50,
-              width: 50,
-              child: Image.network(
-                url[i],
-                fit: BoxFit.fill,
-              ),
-            ),
-          );
-        });
   }
 }
