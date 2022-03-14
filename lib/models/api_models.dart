@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:dio/dio.dart';
 import 'package:ecom/api/responses.dart';
 import 'package:ecom/utils/constants.dart';
 import 'package:flutter/cupertino.dart';
@@ -104,23 +105,31 @@ class OnlineModel {
       required int quanity,
       required success,
       required fail}) {
-    http.post(Uri.parse("$baseUrl/cart"), headers: {
-      'Apikey': apiKey
-    }, body: {
+    var formData = FormData.fromMap({
       "p_id": pid,
-      "quantity": quanity
-    }).then((http.Response response) {
-      print(response.body);
+      "quantity": quanity,
+    });
+    Dio()
+        .post(
+      "$baseUrl/cart",
+      data: formData,
+      options: Options(
+        headers: {
+          "Apikey": apiKey, // set content-length
+        },
+      ),
+    )
+        .then((response) {
+      debugPrint(response.data.toString());
       if (response.statusCode == 200) {
-        var json = jsonDecode(response.body);
-        LoginResponse loginResponse = LoginResponse.fromJson(json);
+        LoginResponse loginResponse = LoginResponse.fromJson(response.data);
         if (!loginResponse.error!) {
-          success(loginResponse);
+          success(loginResponse.message);
         } else {
           fail(loginResponse.message);
         }
       } else {
-        fail(response.reasonPhrase);
+        fail(response.statusMessage);
       }
     });
   }
@@ -130,12 +139,44 @@ class OnlineModel {
       Uri.parse("$baseUrl/cart"),
       headers: {'Apikey': apiKey},
     ).then((http.Response response) {
+      debugPrint(response.toString());
       if (response.statusCode == 200) {
         debugPrint(response.body.toString());
         var json = jsonDecode(response.body);
         success(ProductListResponse.fromJson(json).products);
       } else {
         fail(response.reasonPhrase);
+      }
+    });
+  }
+
+  static removeFromCart(
+      {required apiKey, required int cid, required success, required fail}) {
+    // debugPrint("$cid, $apiKey");
+    Dio()
+        .delete(
+      "$baseUrl/cart",
+      queryParameters: {
+        "c_id": cid,
+      },
+      options: Options(
+        headers: {
+          "Apikey": apiKey, // set content-length
+        },
+      ),
+    )
+        .then((response) {
+      debugPrint("${response.statusCode}");
+      debugPrint(response.data.toString());
+      if (response.statusCode == 200) {
+        LoginResponse loginResponse = LoginResponse.fromJson(response.data);
+        if (!loginResponse.error!) {
+          success(loginResponse.message);
+        } else {
+          fail(loginResponse.message);
+        }
+      } else {
+        fail(response.statusMessage);
       }
     });
   }

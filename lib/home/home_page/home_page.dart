@@ -326,12 +326,11 @@ class _HomeBodyState extends State<HomeBody> {
                                       quanity: 1,
                                       success: (resp) {
                                         UserInterfaceUtils.showSnackBar(
-                                            "Added to Cart", context);
+                                            resp, context);
                                       },
                                       fail: (msg) {
                                         UserInterfaceUtils.showSnackBar(
-                                            "Sorry cannot add to Cart",
-                                            context);
+                                            msg, context);
                                       },
                                     );
                                   },

@@ -183,6 +183,7 @@ class Products {
   int? discountPrice;
   String? description;
   int? quantity;
+  int? cart_id;
   String? productionDate;
   String? expireDate;
   List<String>? images;
@@ -207,6 +208,7 @@ class Products {
     discountPrice = json['discount_price'];
     description = json['description'];
     quantity = json['quantity'];
+    cart_id = json['cart_id'];
     productionDate = json['production_date'];
     expireDate = json['expire_date'];
     images = json['images'].cast<String>();
@@ -221,6 +223,7 @@ class Products {
     data['discount_price'] = discountPrice;
     data['description'] = description;
     data['quantity'] = quantity;
+    data['cart_id'] = cart_id;
     data['production_date'] = productionDate;
     data['expire_date'] = expireDate;
     data['images'] = images;
