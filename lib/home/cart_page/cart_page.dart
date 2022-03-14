@@ -1,5 +1,6 @@
 import 'package:ecom/home/cart_page/components/cart_item.dart';
 import 'package:ecom/utils/DataHolder.dart';
+import 'package:ecom/utils/constants.dart';
 import 'package:flutter/material.dart';
 
 import '../../api/responses.dart';
@@ -15,6 +16,7 @@ class CartPage extends StatefulWidget {
 
 class _CartPageState extends State<CartPage> {
   List<Products>? productList;
+  double total = 0.0;
   @override
   void initState() {
     super.initState();
@@ -26,35 +28,84 @@ class _CartPageState extends State<CartPage> {
     return Scaffold(
         appBar: AppBar(title: const Text("Cart")),
         body: productList != null
-            ? ListView.separated(
-                padding: EdgeInsets.symmetric(vertical: 18),
-                separatorBuilder: (context, index) => const SizedBox(
-                      height: 10,
+            ? Column(
+                children: [
+                  Expanded(
+                    child: RefreshIndicator(
+                      onRefresh: () => refresh(),
+                      child: ListView.separated(
+                          padding: const EdgeInsets.symmetric(vertical: 18),
+                          separatorBuilder: (context, index) => const Divider(),
+                          itemCount: productList!.length,
+                          itemBuilder: (context, index) {
+                            return CartItem(
+                              product: productList![index],
+                              onClick: () {},
+                              onDelete: () {
+                                OnlineModel.removeFromCart(
+                                    apiKey: DataHolder.loginResponse!.apiKey,
+                                    cid: productList![index].cart_id!,
+                                    success: (msg) {
+                                      setState(() {
+                                        productList!.removeAt(index);
+                                      });
+                                      UserInterfaceUtils.showSnackBar(
+                                          msg, context);
+                                    },
+                                    fail: (msg) {
+                                      UserInterfaceUtils.showSnackBar(
+                                          msg, context);
+                                    });
+                              },
+                            );
+                          }),
                     ),
-                itemCount: productList!.length,
-                itemBuilder: (context, index) {
-                  return CartItem(
-                    product: productList![index],
-                    onClick: () {},
-                    onDelete: () {
-                      OnlineModel.removeFromCart(
-                          apiKey: DataHolder.loginResponse!.apiKey,
-                          cid: productList![index].cart_id!,
-                          success: (msg) {
-                            setState(() {
-                              productList!.removeAt(index);
-                            });
-                            UserInterfaceUtils.showSnackBar(msg, context);
-                          },
-                          fail: (msg) {
-                            UserInterfaceUtils.showSnackBar(msg, context);
-                          });
-                    },
-                  );
-                })
+                  ),
+                  Container(
+                    decoration: const BoxDecoration(
+                        color: kPrimaryColor,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(24),
+                          topRight: Radius.circular(24),
+                        )),
+                    height: 60,
+                    child: Row(children: [
+                      Expanded(
+                        child: Text(
+                          "    Total: Rs ${total.toInt()}",
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 20),
+                        child: ElevatedButton.icon(
+                            onPressed: () {},
+                            style:
+                                ElevatedButton.styleFrom(primary: Colors.amber),
+                            icon: const Icon(Icons.shopify),
+                            label: const Text("Check Out")),
+                      )
+                    ]),
+                  )
+                ],
+              )
             : const Center(
                 child: CircularProgressIndicator(),
               ));
+  }
+
+  Future<void> refresh() async {
+    getCartItems();
+  }
+
+  setTotal() {
+    total = 0.0;
+    for (var element in productList!) {
+      total = total + (element.discountPrice! * element.cart_quantity!);
+    }
   }
 
   void getCartItems() {
@@ -63,11 +114,12 @@ class _CartPageState extends State<CartPage> {
       apiKey: apiKey,
       success: (List<Products> data) {
         setState(() {
-          productList = data.reversed.toList();
+          productList = data;
+          setTotal();
         });
       },
       fail: (msg) {
-        print("failed cart $msg");
+        // print("failed cart $msg");
       },
     );
   }

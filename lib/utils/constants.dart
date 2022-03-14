@@ -16,7 +16,7 @@ final RegExp emailValidatorRegExp = RegExp(
 
 const kDividerColor = Color(0xFFF9F9F9);
 const kInputColor = Color.fromARGB(255, 231, 231, 231);
-const kPrimaryColor = Color(0xFF0084FF);
+const kPrimaryColor = Color(0xFFD69E84);
 const kGreyColor = Color(0xFF969696);
 const kPrimaryTextColor = Colors.black;
 

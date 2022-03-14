@@ -17,31 +17,50 @@ class CartItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 10),
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      decoration: BoxDecoration(
-          color: Colors.grey.withOpacity(.12),
-          borderRadius: BorderRadius.circular(14)),
-      child: ListTile(
-        leading: SizedBox(
-          width: MediaQuery.of(context).size.width * .15,
-          child: CachedNetworkImage(
-            imageUrl: product.images!.first,
-            fit: BoxFit.cover,
+      width: double.infinity,
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            margin: const EdgeInsets.only(right: 14),
+            width: 90,
+            height: 110,
+            child: CachedNetworkImage(
+              imageUrl: product.images!.first,
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
-        title: Text(product.name!),
-        subtitle: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-          Text("Rs. ${product.discountPrice!}"),
-          IconButton(
-              onPressed: () {
-                onDelete();
-              },
-              icon: Icon(
-                Icons.remove_circle,
-                color: Colors.red.withOpacity(.5),
-              ))
-        ]),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    product.name!,
+                    style: const TextStyle(
+                        fontSize: 15, fontWeight: FontWeight.w500),
+                  ),
+                  SizedBox(
+                    height: 40,
+                    child: IconButton(
+                        onPressed: () {
+                          onDelete();
+                        },
+                        icon: Icon(
+                          Icons.remove_circle,
+                          color: Colors.red.withOpacity(.5),
+                        )),
+                  )
+                ],
+              ),
+              Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Text("Rs. ${product.discountPrice! * product.cart_quantity!}"),
+                Text("    Qty. ${product.cart_quantity!}"),
+              ]),
+            ],
+          ),
+        ],
       ),
     );
   }

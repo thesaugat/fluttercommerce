@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ecom/home/category_page/screens/category_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../api/responses.dart';
@@ -40,7 +41,14 @@ class _CategoryPageState extends State<CategoryPage> {
           ),
           itemBuilder: (_, i) {
             return GestureDetector(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (__) {
+                  return CategoryProductScreen(
+                    id: categories![i].id!,
+                    name: categories![i].name!,
+                  );
+                }));
+              },
               child: Column(
                 children: [
                   SizedBox(

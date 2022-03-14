@@ -45,6 +45,20 @@ class OnlineModel {
     });
   }
 
+  static getProductsByCat({catId, success, fail}) {
+    http
+        .get(Uri.parse("$baseUrl/get-products-by-category?c_id=$catId"))
+        .then((http.Response response) {
+      debugPrint(response.toString());
+      if (response.statusCode == 200) {
+        var json = jsonDecode(response.body);
+        success(ProductListResponse.fromJson(json).products);
+      } else {
+        fail(response.reasonPhrase);
+      }
+    });
+  }
+
   static login({
     required email,
     required password,
@@ -135,6 +149,7 @@ class OnlineModel {
   }
 
   static getCart({required apiKey, required success, required fail}) {
+    print(apiKey);
     http.get(
       Uri.parse("$baseUrl/cart"),
       headers: {'Apikey': apiKey},
@@ -152,7 +167,6 @@ class OnlineModel {
 
   static removeFromCart(
       {required apiKey, required int cid, required success, required fail}) {
-    // debugPrint("$cid, $apiKey");
     Dio()
         .delete(
       "$baseUrl/cart",

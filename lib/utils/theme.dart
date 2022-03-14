@@ -6,7 +6,9 @@ class ThemeUtils {
     return ThemeData(
         primarySwatch: Colors.blue,
         appBarTheme: const AppBarTheme(
+            iconTheme: IconThemeData(color: Colors.black),
             centerTitle: false,
+            elevation: 1,
             backgroundColor: Colors.white,
             titleTextStyle: TextStyle(
                 color: kPrimaryTextColor,

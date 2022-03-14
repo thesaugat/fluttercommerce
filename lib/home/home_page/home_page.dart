@@ -231,119 +231,135 @@ class _HomeBodyState extends State<HomeBody> {
         child: CircularProgressIndicator(),
       );
     } else {
-      return GridView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount:
-                MediaQuery.of(context).orientation == Orientation.landscape
-                    ? 3
-                    : 2,
-            crossAxisSpacing: 4,
-            mainAxisSpacing: 8,
-            childAspectRatio: (1.9 / 3),
-          ),
-          itemCount: productList!.length,
-          itemBuilder: (c, i) {
-            return GestureDetector(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: ((context) => SingleProductPage(
-                              products: productList![i],
-                            ))));
-              },
-              child: Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15.0),
-                ),
-                child: Column(children: [
-                  SizedBox(
-                      height: 180,
-                      width: double.infinity,
-                      child: CachedNetworkImage(
-                          imageUrl: productList![i].images!.first)),
-                  Expanded(
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: Stack(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  productList![i].name!,
-                                  maxLines: 2,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                Text(
-                                  "Rs. ${productList![i].discountPrice!}",
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 13,
-                                      color: kPrimaryColor),
-                                ),
-                                const SizedBox(
-                                  height: 2,
-                                ),
-                                Text(
-                                  "Rs. ${productList![i].price}",
-                                  style: const TextStyle(
-                                      decoration: TextDecoration.lineThrough,
-                                      fontWeight: FontWeight.w300,
-                                      fontSize: 11),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Positioned(
-                              right: 0,
-                              bottom: 0,
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                  color: Colors.blue,
-                                  borderRadius: BorderRadius.only(
-                                    bottomRight: Radius.circular(15),
-                                    topLeft: Radius.circular(15),
-                                  ),
-                                ),
-                                child: IconButton(
-                                  icon: const Icon(
-                                    Icons.add,
-                                    color: Colors.white,
-                                  ),
-                                  onPressed: () {
-                                    OnlineModel.addToCart(
-                                      apiKey: DataHolder.loginResponse!.apiKey!,
-                                      pid: productList![i].id!,
-                                      quanity: 1,
-                                      success: (resp) {
-                                        UserInterfaceUtils.showSnackBar(
-                                            resp, context);
-                                      },
-                                      fail: (msg) {
-                                        UserInterfaceUtils.showSnackBar(
-                                            msg, context);
-                                      },
-                                    );
-                                  },
-                                ),
-                              ))
-                        ],
-                      ),
-                    ),
-                  )
-                ]),
-              ),
-            );
-          });
+      return ProductList(context: context, productList: productList);
     }
+  }
+}
+
+class ProductList extends StatelessWidget {
+  const ProductList({
+    Key? key,
+    required this.context,
+    required this.productList,
+  }) : super(key: key);
+
+  final BuildContext context;
+  final List<Products>? productList;
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount:
+              MediaQuery.of(context).orientation == Orientation.landscape
+                  ? 3
+                  : 2,
+          crossAxisSpacing: 4,
+          mainAxisSpacing: 8,
+          childAspectRatio: (1.9 / 3),
+        ),
+        itemCount: productList!.length,
+        itemBuilder: (c, i) {
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: ((context) => SingleProductPage(
+                            products: productList![i],
+                          ))));
+            },
+            child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0),
+              ),
+              child: Column(children: [
+                SizedBox(
+                    height: 180,
+                    width: double.infinity,
+                    child: CachedNetworkImage(
+                        imageUrl: productList![i].images!.first)),
+                Expanded(
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: Stack(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                productList![i].name!,
+                                maxLines: 2,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              Text(
+                                "Rs. ${productList![i].discountPrice!}",
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 13,
+                                    color: kPrimaryColor),
+                              ),
+                              const SizedBox(
+                                height: 2,
+                              ),
+                              Text(
+                                "Rs. ${productList![i].price}",
+                                style: const TextStyle(
+                                    decoration: TextDecoration.lineThrough,
+                                    fontWeight: FontWeight.w300,
+                                    fontSize: 11),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Positioned(
+                            right: 0,
+                            bottom: 0,
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                color: kPrimaryColor,
+                                borderRadius: BorderRadius.only(
+                                  bottomRight: Radius.circular(15),
+                                  topLeft: Radius.circular(15),
+                                ),
+                              ),
+                              child: IconButton(
+                                icon: const Icon(
+                                  Icons.add,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () {
+                                  OnlineModel.addToCart(
+                                    apiKey: DataHolder.loginResponse!.apiKey!,
+                                    pid: productList![i].id!,
+                                    quanity: 1,
+                                    success: (resp) {
+                                      UserInterfaceUtils.showSnackBar(
+                                          resp, context);
+                                    },
+                                    fail: (msg) {
+                                      UserInterfaceUtils.showSnackBar(
+                                          msg, context);
+                                    },
+                                  );
+                                },
+                              ),
+                            ))
+                      ],
+                    ),
+                  ),
+                )
+              ]),
+            ),
+          );
+        });
   }
 }

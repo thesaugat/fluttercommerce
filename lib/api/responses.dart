@@ -184,6 +184,7 @@ class Products {
   String? description;
   int? quantity;
   int? cart_id;
+  int? cart_quantity;
   String? productionDate;
   String? expireDate;
   List<String>? images;
@@ -196,6 +197,8 @@ class Products {
       this.discountPrice,
       this.description,
       this.quantity,
+      this.cart_quantity,
+      this.cart_id,
       this.productionDate,
       this.expireDate,
       this.images,
@@ -209,6 +212,7 @@ class Products {
     description = json['description'];
     quantity = json['quantity'];
     cart_id = json['cart_id'];
+    cart_quantity = json['cart_quantity'];
     productionDate = json['production_date'];
     expireDate = json['expire_date'];
     images = json['images'].cast<String>();
@@ -224,6 +228,7 @@ class Products {
     data['description'] = description;
     data['quantity'] = quantity;
     data['cart_id'] = cart_id;
+    data['cart_quantity'] = cart_quantity;
     data['production_date'] = productionDate;
     data['expire_date'] = expireDate;
     data['images'] = images;
