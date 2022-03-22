@@ -1,4 +1,5 @@
 import 'package:ecom/home/cart_page/components/cart_item.dart';
+import 'package:ecom/home/checkout_page/checout_page.dart';
 import 'package:ecom/utils/DataHolder.dart';
 import 'package:ecom/utils/constants.dart';
 import 'package:flutter/material.dart';
@@ -82,7 +83,17 @@ class _CartPageState extends State<CartPage> {
                       Padding(
                         padding: const EdgeInsets.only(right: 20),
                         child: ElevatedButton.icon(
-                            onPressed: () {},
+                            onPressed: () {
+                              if (productList != null) {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (__) {
+                                  return CheckOutPage(
+                                    productList: productList!,
+                                    total: total,
+                                  );
+                                }));
+                              }
+                            },
                             style:
                                 ElevatedButton.styleFrom(primary: Colors.amber),
                             icon: const Icon(Icons.shopify),
@@ -118,9 +129,7 @@ class _CartPageState extends State<CartPage> {
           setTotal();
         });
       },
-      fail: (msg) {
-        // print("failed cart $msg");
-      },
+      fail: (msg) {},
     );
   }
 }

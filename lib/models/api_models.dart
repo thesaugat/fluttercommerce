@@ -194,4 +194,55 @@ class OnlineModel {
       }
     });
   }
+
+  static getAddress({required apiKey, required success, required fail}) {
+    http.get(
+      Uri.parse("$baseUrl/address"),
+      headers: {'Apikey': apiKey},
+    ).then((http.Response response) {
+      debugPrint(response.toString());
+      if (response.statusCode == 200) {
+        debugPrint(response.body.toString());
+        var json = jsonDecode(response.body);
+        success(AddressResponse.fromJson(json).adresses);
+      } else {
+        fail(response.reasonPhrase);
+      }
+    });
+  }
+
+  static addAddress({
+    required apiKey,
+    required city,
+    required street,
+    required province,
+    required desc,
+    required success,
+    required fail,
+  }) {
+    // var formData = FormData.fromMap({
+    //   "city": city,
+    //   "province": province,
+    //   "description": desc,
+    //   "street": street,
+    // });
+    http.post(
+      Uri.parse("$baseUrl/address"),
+      body: {
+        "city": city,
+        "province": province,
+        "description": desc,
+        "street": street,
+      },
+      headers: {'Apikey': apiKey},
+    ).then((http.Response response) {
+      debugPrint(response.toString());
+      debugPrint("${response.statusCode}");
+      if (response.statusCode == 201) {
+        success("Success");
+      } else {
+        fail(response.reasonPhrase);
+      }
+    });
+  }
 }

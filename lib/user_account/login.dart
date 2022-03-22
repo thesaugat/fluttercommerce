@@ -1,6 +1,8 @@
-import 'package:ecom/home/home_page/home_page.dart';
+import 'package:ecom/api/responses.dart';
+import 'package:ecom/home/main_page.dart';
 import 'package:ecom/models/api_models.dart';
 import 'package:ecom/user_account/sign_up.dart';
+import 'package:ecom/utils/DataHolder.dart';
 import 'package:ecom/utils/constants.dart';
 import 'package:ecom/utils/user_interface_utils.dart';
 import 'package:flutter/material.dart';
@@ -196,12 +198,13 @@ class _LoginPageState extends State<LoginPage> {
                     OnlineModel.login(
                         email: email,
                         password: pass,
-                        success: (resp) {
+                        success: (LoginResponse resp) {
+                          DataHolder.loginResponse = resp;
                           UserInterfaceUtils.showSnackBar(
                               "Login Succed", context);
                           Navigator.pushReplacement(context,
                               MaterialPageRoute(builder: (__) {
-                            return const HomePage();
+                            return const MainPage();
                           }));
                         },
                         fail: (msg) {

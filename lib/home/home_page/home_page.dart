@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecom/home/product_page/product_page.dart';
+import 'package:ecom/home/search_page/search_page.dart';
 import 'package:ecom/models/api_models.dart';
 import 'package:ecom/utils/DataHolder.dart';
 import 'package:ecom/utils/constants.dart';
@@ -17,25 +18,32 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          width: double.infinity,
-          height: 40,
-          decoration: BoxDecoration(
-              color: kInputColor, borderRadius: BorderRadius.circular(10)),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: const [
-              Icon(
-                Icons.search,
-                color: Colors.grey,
-              ),
-              Text(
-                "  Search For Products",
-                style: TextStyle(color: Colors.grey, fontSize: 14),
-              ),
-            ],
+        title: GestureDetector(
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (__) {
+              return const SearchPage();
+            }));
+          },
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            width: double.infinity,
+            height: 40,
+            decoration: BoxDecoration(
+                color: kInputColor, borderRadius: BorderRadius.circular(10)),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: const [
+                Icon(
+                  Icons.search,
+                  color: Colors.grey,
+                ),
+                Text(
+                  "  Search For Products",
+                  style: TextStyle(color: Colors.grey, fontSize: 14),
+                ),
+              ],
+            ),
           ),
         ),
         elevation: 1,

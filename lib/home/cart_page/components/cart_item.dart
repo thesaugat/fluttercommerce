@@ -5,13 +5,10 @@ import 'package:flutter/material.dart';
 class CartItem extends StatelessWidget {
   final Products product;
   final Function onClick;
-  final Function onDelete;
+  final Function? onDelete;
 
   const CartItem(
-      {Key? key,
-      required this.product,
-      required this.onClick,
-      required this.onDelete})
+      {Key? key, required this.product, required this.onClick, this.onDelete})
       : super(key: key);
 
   @override
@@ -45,11 +42,13 @@ class CartItem extends StatelessWidget {
                     height: 40,
                     child: IconButton(
                         onPressed: () {
-                          onDelete();
+                          if (onDelete != null) onDelete!();
                         },
                         icon: Icon(
                           Icons.remove_circle,
-                          color: Colors.red.withOpacity(.5),
+                          color: onDelete != null
+                              ? Colors.red.withOpacity(.5)
+                              : Colors.transparent,
                         )),
                   )
                 ],

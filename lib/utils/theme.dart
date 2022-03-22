@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class ThemeUtils {
   static getLightTheme() {
     return ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.brown,
         appBarTheme: const AppBarTheme(
             iconTheme: IconThemeData(color: Colors.black),
             centerTitle: false,
@@ -21,7 +21,7 @@ class ThemeUtils {
 
   static getDarkTheme() {
     return ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.brown,
         scaffoldBackgroundColor: Colors.grey.shade900,
         appBarTheme: AppBarTheme(
           backgroundColor: Colors.black,
