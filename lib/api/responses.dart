@@ -168,7 +168,7 @@ class ProductListResponse {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (products != null) {
       data['products'] = products!.map((v) => v.toJson()).toList();
     }
@@ -292,6 +292,107 @@ class Adresses {
     data['street'] = this.street;
     data['description'] = this.description;
     data['province'] = this.province;
+    return data;
+  }
+}
+
+class OrderHistoryResponse {
+  List<OrderHistory>? orderHistory;
+  bool? error;
+  String? message;
+
+  OrderHistoryResponse({this.orderHistory, this.error, this.message});
+
+  OrderHistoryResponse.fromJson(Map<String, dynamic> json) {
+    if (json['order_history'] != null) {
+      orderHistory = <OrderHistory>[];
+      json['order_history'].forEach((v) {
+        orderHistory!.add(new OrderHistory.fromJson(v));
+      });
+    }
+    error = json['error'];
+    message = json['message'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (this.orderHistory != null) {
+      data['order_history'] =
+          this.orderHistory!.map((v) => v.toJson()).toList();
+    }
+    data['error'] = this.error;
+    data['message'] = this.message;
+    return data;
+  }
+}
+
+class OrderHistory {
+  int? id;
+  String? orderDateTime;
+  int? paymentType;
+  String? paymentRefrence;
+  List<Bag>? bag;
+
+  OrderHistory(
+      {this.id,
+      this.orderDateTime,
+      this.paymentType,
+      this.paymentRefrence,
+      this.bag});
+
+  OrderHistory.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    orderDateTime = json['order_date_time'];
+    paymentType = json['payment_type'];
+    paymentRefrence = json['payment_refrence'];
+    if (json['bag'] != null) {
+      bag = <Bag>[];
+      json['bag'].forEach((v) {
+        bag!.add(new Bag.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = this.id;
+    data['order_date_time'] = this.orderDateTime;
+    data['payment_type'] = this.paymentType;
+    data['payment_refrence'] = this.paymentRefrence;
+    if (this.bag != null) {
+      data['bag'] = this.bag!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class Bag {
+  int? id;
+  int? productId;
+  int? unitPrice;
+  int? quantity;
+  Products? product;
+
+  Bag({this.id, this.productId, this.unitPrice, this.quantity, this.product});
+
+  Bag.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    productId = json['product_id'];
+    unitPrice = json['unit_price'];
+    quantity = json['quantity'];
+    product =
+        json['product'] != null ? new Products.fromJson(json['product']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = this.id;
+    data['product_id'] = this.productId;
+    data['unit_price'] = this.unitPrice;
+    data['quantity'] = this.quantity;
+    if (this.product != null) {
+      data['product'] = this.product!.toJson();
+    }
     return data;
   }
 }

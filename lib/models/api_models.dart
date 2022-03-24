@@ -149,7 +149,6 @@ class OnlineModel {
   }
 
   static getCart({required apiKey, required success, required fail}) {
-    print(apiKey);
     http.get(
       Uri.parse("$baseUrl/cart"),
       headers: {'Apikey': apiKey},
@@ -242,6 +241,73 @@ class OnlineModel {
         success("Success");
       } else {
         fail(response.reasonPhrase);
+      }
+    });
+  }
+
+  static order(
+      {required apiKey,
+      required int addressId,
+      required int ptype,
+      required String paymentRefrence,
+      required success,
+      required fail}) {
+    var formData = FormData.fromMap(
+      {
+        "p_type": ptype,
+        "payment_refrence": paymentRefrence,
+        "address_id": addressId,
+      },
+    );
+    Dio()
+        .post(
+      "$baseUrl/order",
+      data: formData,
+      options: Options(
+        headers: {
+          "Apikey": apiKey, // set content-length
+        },
+      ),
+    )
+        .then((response) {
+      debugPrint("${response.statusCode}");
+      debugPrint(response.toString());
+      if (response.statusCode == 201) {
+        LoginResponse loginResponse = LoginResponse.fromJson(response.data);
+        if (!loginResponse.error!) {
+          success("Order Success");
+        } else {
+          fail(loginResponse.message);
+        }
+      } else {
+        fail(response.statusMessage);
+      }
+    });
+  }
+
+  static orderHistory({required apiKey, required success, required fail}) {
+    Dio()
+        .get(
+      "$baseUrl/order",
+      options: Options(
+        headers: {
+          "Apikey": apiKey, // set content-length
+        },
+      ),
+    )
+        .then((response) {
+      debugPrint("${response.statusCode}");
+      debugPrint(response.toString());
+      if (response.statusCode == 200) {
+        OrderHistoryResponse orderHistoryResponse =
+            OrderHistoryResponse.fromJson(response.data);
+        if (!orderHistoryResponse.error!) {
+          success(orderHistoryResponse);
+        } else {
+          fail(orderHistoryResponse.message);
+        }
+      } else {
+        fail(response.statusMessage);
       }
     });
   }

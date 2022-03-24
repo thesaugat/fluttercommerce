@@ -2,7 +2,10 @@ import 'package:ecom/api/responses.dart';
 import 'package:ecom/home/address/address_page.dart';
 import 'package:ecom/home/cart_page/cart_page.dart';
 import 'package:ecom/home/cart_page/components/cart_item.dart';
+import 'package:ecom/models/api_models.dart';
+import 'package:ecom/utils/DataHolder.dart';
 import 'package:ecom/utils/constants.dart';
+import 'package:ecom/utils/user_interface_utils.dart';
 import 'package:flutter/material.dart';
 
 class CheckOutPage extends StatefulWidget {
@@ -144,12 +147,30 @@ class _CheckOutPageState extends State<CheckOutPage> {
             ]),
           ),
           Container(
-            padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
             height: 100,
             width: double.infinity,
             color: Colors.white,
             child: TextButton(
-              onPressed: () {},
+              onPressed: () {
+                if (adresses != null) {
+                  OnlineModel.order(
+                      apiKey: DataHolder.loginResponse!.apiKey,
+                      addressId: adresses!.id!,
+                      ptype: isCod ? 1 : 2,
+                      paymentRefrence: isCod ? "COD" : "2",
+                      success: (resp) {
+                        UserInterfaceUtils.showSnackBar(
+                            "Your order is successflly placed! Wait 2-3 working days to get it delivered!",
+                            context);
+
+                        Navigator.pop(context);
+                      },
+                      fail: (msg) {
+                        UserInterfaceUtils.showSnackBar(msg, context);
+                      });
+                }
+              },
               child: const Text("Check Out",
                   style: TextStyle(fontSize: 16, color: Colors.white)),
               style: TextButton.styleFrom(
