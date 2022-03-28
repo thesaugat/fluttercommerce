@@ -135,8 +135,6 @@ class OnlineModel {
       ),
     )
         .then((response) {
-      debugPrint("hello");
-      debugPrint(response.data.toString());
       debugPrint(response.toString());
       debugPrint(apiKey);
       if (response.statusCode == 200) {
@@ -157,7 +155,7 @@ class OnlineModel {
       Uri.parse("$baseUrl/cart"),
       headers: {'Apikey': apiKey},
     ).then((http.Response response) {
-      debugPrint(response.body.toString());
+      debugPrint(response.toString());
       if (response.statusCode == 200) {
         debugPrint(response.body.toString());
         var json = jsonDecode(response.body);

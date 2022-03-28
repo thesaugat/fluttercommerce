@@ -1,12 +1,10 @@
 import 'dart:convert';
-
 import 'package:ecom/api/responses.dart';
 import 'package:ecom/user_account/login.dart';
 import 'package:ecom/utils/DataHolder.dart';
 import 'package:ecom/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../home/main_page.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -41,11 +39,11 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Container(
         height: double.infinity,
         color: Colors.white,
-        child: const Center(
-            child: Icon(
-          Icons.shop,
-          color: kPrimaryColor,
-          size: 80,
+        child: Center(
+            child: Image.asset(
+          'assets/images/play_store_512.png',
+          height: 80,
+          width: 80,
         )),
       ),
     );
