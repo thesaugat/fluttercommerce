@@ -52,6 +52,7 @@ class OnlineModel {
       debugPrint(response.toString());
       if (response.statusCode == 200) {
         var json = jsonDecode(response.body);
+        debugPrint(json.toString());
         success(ProductListResponse.fromJson(json).products);
       } else {
         fail(response.reasonPhrase);
@@ -130,7 +131,7 @@ class OnlineModel {
       data: formData,
       options: Options(
         headers: {
-          "Apikey": apiKey, // set content-length
+          "token": apiKey,
         },
       ),
     )
@@ -155,7 +156,7 @@ class OnlineModel {
   static getCart({required apiKey, required success, required fail}) {
     http.get(
       Uri.parse("$baseUrl/cart"),
-      headers: {'Apikey': apiKey},
+      headers: {'token': apiKey},
     ).then((http.Response response) {
       debugPrint(response.body.toString());
       if (response.statusCode == 200) {
@@ -178,7 +179,7 @@ class OnlineModel {
       },
       options: Options(
         headers: {
-          "Apikey": apiKey, // set content-length
+          "token": apiKey, // set content-length
         },
       ),
     )
@@ -269,7 +270,7 @@ class OnlineModel {
       data: formData,
       options: Options(
         headers: {
-          "Apikey": apiKey, // set content-length
+          "token": apiKey, // set content-length
         },
       ),
     )
@@ -295,7 +296,7 @@ class OnlineModel {
       "$baseUrl/order",
       options: Options(
         headers: {
-          "Apikey": apiKey, // set content-length
+          "token": apiKey, // set content-length
         },
       ),
     )
